@@ -1,1 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wafle | Developer Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="https://coderkid4.github.io/wafle/home/wafle.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Variables */
+        :root {
+            /* Light Theme Colors */
+            --primary: #6f42c1;
+            --secondary: #20c997;
+            --accent: #fd7e14;
+            --light-bg: #f8f9fa;
+            --light-card: #ffffff;
+            --light-text: #212529;
+            --light-subtext: #6c757d;
+            --light-border: #dee2e6;
+            --light-navbar: rgba(255, 255, 255, 0.95);
+            
+            /* Dark Theme Colors */
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e9ecef;
+            --dark-subtext: #adb5bd;
+            --dark-border: #343a40;
+            --dark-navbar: rgba(30, 30, 30, 0.95);
+            
+            /* Coffee Colors */
+            --coffee-dark: #4b2c20;
+            --coffee-medium: #8b4513;
+            --coffee-light: #d4a76a;
+            --coffee-cream: #f5e8d0;
+            
+            /* Current Theme (Defaults to Light) */
+            --bg: var(--light-bg);
+            --card: var(--light-card);
+            --text: var(--light-text);
+            --subtext: var(--light-subtext);
+            --border: var(--light-border);
+            --navbar: var(--light-navbar);
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.4s ease;
+            --transition-slow: 0.6s ease;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+            --shadow-xl: 0 12px 24px rgba(0,0,0,0.2);
+            
+            /* Layout */
+            --section-padding: 5rem 1.5rem;
+            --container-max: 1200px;
+            --border-radius: 12px;
+        }
+        
+        .dark-mode {
+            --bg: var(--dark-bg);
+            --card: var(--dark-card);
+            --text: var(--dark-text);
+            --subtext: var(--dark-subtext);
+            --border: var(--dark-border);
+            --navbar: var(--dark-navbar);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color var(--transition-medium), color var(--transition-medium);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity var(--transition-medium), visibility var(--transition-medium);
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .coffee-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .coffee-cup {
+            width: 80px;
+            height: 60px;
+            border: 6px solid var(--coffee-medium);
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            background: linear-gradient(to right, var(--coffee-dark), var(--coffee-medium));
+            overflow: hidden;
+        }
+        
+        .coffee-cup::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 20px;
+            background-color: var(--coffee-medium);
+            border-radius: 50%;
+        }
+        
+        .coffee-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to bottom, var(--coffee-dark), var(--coffee-medium));
+            animation: fillCoffee 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes fillCoffee {
+            0% { height: 0; }
+            100% { height: 100%; }
+        }
+        
+        .coffee-steam {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .steam {
+            width: 8px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: steamRise 1.5s ease-in-out infinite;
+        }
+        
+        .steam:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .steam:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes steamRise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* Crazy Background */
+        .crazy-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(40px);
+            animation: float 20s infinite linear;
+        }
+        
+        .bg-element-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 10%;
+            left: 5%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+        
+        .bg-element-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            top: 60%;
+            right: 10%;
+            animation-duration: 30s;
+            animation-delay: 5s;
+        }
+        
+        .bg-element-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent);
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 20s;
+            animation-delay: 10s;
+        }
+        
+        .bg-element-4 {
+            width: 350px;
+            height: 350px;
+            background: var(--coffee-medium);
+            top: 20%;
+            right: 20%;
+            animation-duration: 35s;
+            animation-delay: 15s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-100px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--navbar);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            padding: 1rem 1.5rem;
+            transition: all var(--transition-medium);
+        }
+        
+        .nav-container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color var(--transition-fast);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width var(--transition-fast);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--border);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1.5rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+        }
+        
+        section {
+            padding: var(--section-padding);
+            max-width: var(--container-max);
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--subtext);
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding-top: 3rem;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero-title span {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: var(--coffee-light);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--subtext);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--subtext);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Featured Projects */
+        .featured-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .project-image {
+            height: 200px;
+            width: 100%;
+            background-color: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.1));
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-description {
+            color: var(--subtext);
+            margin-bottom: 1rem;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .project-tag {
+            background-color: var(--border);
+            color: var(--text);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        /* All Projects */
+        .projects-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: var(--card);
+            border: 2px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .all-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-medium);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .stat-text {
+            color: var(--subtext);
+            font-size: 1rem;
+        }
+        
+        .coffee-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .coffee-icon {
+            color: var(--coffee-medium);
+            font-size: 1.5rem;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--subtext);
+        }
+        
+        .about-skills {
+            margin-top: 2rem;
+        }
+        
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .skill-name {
+            font-weight: 600;
+        }
+        
+        .skill-bar {
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease;
+        }
+        
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .contact-form {
+            background-color: var(--card);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color var(--transition-fast);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--card);
+            padding: 4rem 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-links h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--subtext);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--subtext);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content, .contact-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--navbar);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem;
+                gap: 1.5rem;
+                box-shadow: var(--shadow-md);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all var(--transition-medium);
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--transition-medium), transform var(--transition-medium);
+        }
+        
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Coffee Animation in Hero */
+        .coffee-hero {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            width: 150px;
+            height: 150px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .coffee-hero svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--coffee-medium);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="coffee-loader">
+            <div class="coffee-cup">
+                <div class="coffee-liquid"></div>
+            </div>
+            <div class="coffee-steam">
+                <div class="steam"></div>
+                <div class="steam"></div>
+                <div class="steam"></div>
+            </div>
+            <h2>Wafle's Portfolio</h2>
+            <p>Brewing the perfect experience...</p>
+        </div>
+    </div>
+    
+    <!-- Crazy Background Elements -->
+    <div class="crazy-bg">
+        <div class="bg-element bg-element-1"></div>
+        <div class="bg-element bg-element-2"></div>
+        <div class="bg-element bg-element-3"></div>
+        <div class="bg-element bg-element-4"></div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="https://coderkid4.github.io/wafle/home/wafle.png" alt="Wafle" class="logo-img">
+                <div class="logo-text">Waf<span>le</span></div>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content fade-in">
+                <h1 class="hero-title">Hello, I'm <span>Wafle</span></h1>
+                <h2 class="hero-subtitle">Full-Stack Developer & Coffee Enthusiast</h2>
+                <p class="hero-description">I craft beautiful, functional digital experiences with clean code and a passion for innovation. When I'm not coding, you'll find me exploring new coffee brewing techniques.</p>
+                <a href="#projects" class="btn">View My Work</a>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">5+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">120+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Coffee Cups</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="coffee-hero">
+                <svg viewBox="0 0 100 100">
+                    <path d="M30,70 Q50,85 70,70 L65,30 Q50,15 35,30 Z" />
+                    <path d="M40,30 L60,30" stroke-width="3" stroke-linecap="round"/>
+                    <ellipse cx="50" cy="75" rx="25" ry="5"/>
+                </svg>
+            </div>
+        </section>
+        
+        <!-- Featured Projects -->
+        <section id="featured" class="featured">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">A selection of my best work showcasing creativity and technical expertise</p>
+            </div>
+            
+            <div class="featured-projects">
+                <div class="project-card fade-in">
+                    <div class="project-image" style="background: linear-gradient(135deg, #6f42c1, #20c997);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">EcoTrack Dashboard</h3>
+                        <p class="project-description">A comprehensive environmental monitoring dashboard with real-time analytics and visualization tools.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">Node.js</span>
+                            <span class="project-tag">D3.js</span>
+                            <span class="project-tag">MongoDB</span>
+                        </div>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in">
+                    <div class="project-image" style="background: linear-gradient(135deg, #fd7e14, #6f42c1);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">BeanLog Coffee Tracker</h3>
+                        <p class="project-description">A coffee brewing journal and recipe manager for enthusiasts to track and perfect their brewing process.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Vue.js</span>
+                            <span class="project-tag">Firebase</span>
+                            <span class="project-tag">PWA</span>
+                            <span class="project-tag">SCSS</span>
+                        </div>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in">
+                    <div class="project-image" style="background: linear-gradient(135deg, #20c997, #fd7e14);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">ArtFlow Creative Suite</h3>
+                        <p class="project-description">A collaborative design platform with real-time editing, version control, and asset management.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">WebSockets</span>
+                            <span class="project-tag">Canvas API</span>
+                            <span class="project-tag">PostgreSQL</span>
+                        </div>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- All Projects -->
+        <section id="projects" class="projects">
+            <div class="section-header fade-in">
+                <h2 class="section-title">All Projects</h2>
+                <p class="section-subtitle">Explore my complete portfolio of development work across various domains</p>
+            </div>
+            
+            <div class="projects-filter fade-in">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+                <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+                <button class="filter-btn" data-filter="design">UI/UX Design</button>
+                <button class="filter-btn" data-filter="tools">Dev Tools</button>
+            </div>
+            
+            <div class="all-projects">
+                <div class="project-card fade-in" data-category="web">
+                    <div class="project-image" style="background: linear-gradient(135deg, #4b2c20, #d4a76a);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">CoffeeShop Locator</h3>
+                        <p class="project-description">Find the best local coffee shops with ratings, brewing methods, and bean origins.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Mapbox</span>
+                            <span class="project-tag">API Integration</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" data-category="mobile">
+                    <div class="project-image" style="background: linear-gradient(135deg, #6f42c1, #20c997);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">TaskFlow Manager</h3>
+                        <p class="project-description">Productivity app with intelligent task prioritization and team collaboration.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">React Native</span>
+                            <span class="project-tag">Redux</span>
+                            <span class="project-tag">Firebase</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" data-category="design">
+                    <div class="project-image" style="background: linear-gradient(135deg, #fd7e14, #6f42c1);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">FinTech Dashboard UI</h3>
+                        <p class="project-description">Modern banking interface with data visualization and transaction management.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Figma</span>
+                            <span class="project-tag">Design System</span>
+                            <span class="project-tag">Prototyping</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" data-category="tools">
+                    <div class="project-image" style="background: linear-gradient(135deg, #20c997, #fd7e14);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">CodeSnippet Manager</h3>
+                        <p class="project-description">Developer tool for organizing, searching, and sharing code snippets across teams.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Electron</span>
+                            <span class="project-tag">IndexedDB</span>
+                            <span class="project-tag">Syntax Highlighting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stats Section -->
+        <section id="stats" class="stats">
+            <div class="section-header fade-in">
+                <h2 class="section-title">My Stats</h2>
+                <p class="section-subtitle">Quantifying my skills, experience, and coffee consumption over the years</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="stat-number">5+</div>
+                    <div class="stat-text">Years of Development Experience</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-number">120+</div>
+                    <div class="stat-text">Projects Completed Successfully</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div class="stat-number">2,500+</div>
+                    <div class="stat-text">Cups of Coffee Brewed</div>
+                    <div class="coffee-counter">
+                        <i class="fas fa-coffee coffee-icon"></i>
+                        <span>And counting...</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">50+</div>
+                    <div class="stat-text">Happy Clients & Collaborators</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Blog Section -->
+        <section id="blog" class="blog">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Blog</h2>
+                <p class="section-subtitle">Thoughts on development, design, and the perfect cup of coffee</p>
+            </div>
+            
+            <div class="featured-projects fade-in">
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #4b2c20, #8b4513);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">The Art of Code & Coffee</h3>
+                        <p class="project-description">Exploring the parallels between crafting perfect code and brewing exceptional coffee.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Development</span>
+                            <span class="project-tag">Coffee</span>
+                            <span class="project-tag">Process</span>
+                        </div>
+                        <a href="https://niamco.github.io/blog" class="btn" target="_blank">Read on Blog</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #6f42c1, #20c997);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Modern CSS Techniques</h3>
+                        <p class="project-description">Deep dive into cutting-edge CSS features and how to implement them effectively.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">Frontend</span>
+                            <span class="project-tag">Web Design</span>
+                        </div>
+                        <a href="https://niamco.github.io/blog" class="btn" target="_blank">Read on Blog</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #fd7e14, #6f42c1);"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Building Portfolio Sites</h3>
+                        <p class="project-description">A guide to creating standout developer portfolios that get noticed.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Portfolio</span>
+                            <span class="project-tag">Career</span>
+                            <span class="project-tag">Design</span>
+                        </div>
+                        <a href="https://niamco.github.io/blog" class="btn" target="_blank">Read on Blog</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="section-header fade-in">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Get to know the developer behind the code</p>
+            </div>
+            
+            <div class="about-content fade-in">
+                <div class="about-text">
+                    <h3>Developer & Coffee Connoisseur</h3>
+                    <p>Hi, I'm Wafle—a full-stack developer with a passion for creating beautiful, functional digital experiences. With over 5 years in the industry, I've worked on everything from small business websites to large-scale enterprise applications.</p>
+                    <p>My approach to development combines technical expertise with creative problem-solving. I believe that great code is like a perfectly brewed cup of coffee—it requires the right ingredients, precise execution, and a touch of artistry.</p>
+                    <p>When I'm not coding, you can find me experimenting with new coffee brewing methods, exploring the outdoors, or contributing to open-source projects.</p>
+                    
+                    <div class="about-skills">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Frontend Development</span>
+                                <span class="skill-percent">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Backend Development</span>
+                                <span class="skill-percent">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">UI/UX Design</span>
+                                <span class="skill-percent">82%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="82"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Coffee Brewing</span>
+                                <span class="skill-percent">100%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <div class="project-image" style="height: 400px; border-radius: var(--border-radius); background: linear-gradient(135deg, var(--coffee-dark), var(--coffee-light));"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Have a project in mind or just want to chat about code and coffee?</p>
+            </div>
+            
+            <div class="contact-content fade-in">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3>Email</h3>
+                            <p>hello@wafle.dev</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3>Location</h3>
+                            <p>Digital Nomad • Currently in Europe</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <div>
+                            <h3>Coffee Chat</h3>
+                            <p>Always up for a virtual coffee meeting</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-codepen"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <a href="#" class="logo">
+                    <img src="https://coderkid4.github.io/wafle/home/wafle.png" alt="Wafle" class="logo-img">
+                    <div class="logo-text">Waf<span>le</span></div>
+                </a>
+                <p>Creating exceptional digital experiences with a side of perfectly brewed coffee.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#featured">Featured</a>
+                <a href="#projects">Projects</a>
+                <a href="#blog">Blog</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <a href="#stats">Stats</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="https://niamco.github.io/blog" target="_blank">Blog</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <p>Follow me for updates on projects, articles, and coffee discoveries.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Wafle. All rights reserved. | Brewed with <i class="fas fa-coffee" style="color: var(--coffee-medium);"></i> and code.</p>
+        </div>
+    </footer>
 
+    <script>
+        // Wait for page to load
+        window.addEventListener('load', function() {
+            // Hide loading screen after 1.5 seconds
+            setTimeout(function() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                
+                // Trigger fade-in animations for elements
+                const fadeElements = document.querySelectorAll('.fade-in');
+                fadeElements.forEach(el => {
+                    el.classList.add('appear');
+                });
+                
+                // Animate skill bars
+                const skillBars = document.querySelectorAll('.skill-progress');
+                skillBars.forEach(bar => {
+                    const width = bar.getAttribute('data-width');
+                    setTimeout(() => {
+                        bar.style.width = width + '%';
+                    }, 300);
+                });
+            }, 1500);
+            
+            // Set current year in footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            
+            // Change menu icon
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // Project Filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card[data-category]');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filterValue = this.getAttribute('data-filter');
+                
+                // Show/hide projects based on filter
+                projectCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Form Submission
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple form validation
+            const formData = new FormData(this);
+            let isValid = true;
+            
+            for (let [key, value] of formData) {
+                if (!value.trim()) {
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            if (isValid) {
+                alert('Thank you for your message! I\'ll get back to you soon.');
+                this.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+        
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('appear');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = 'var(--shadow-lg)';
+                navbar.style.padding = '0.75rem 1.5rem';
+            } else {
+                navbar.style.boxShadow = 'var(--shadow-md)';
+                navbar.style.padding = '1rem 1.5rem';
+            }
+        });
+        
+        // Coffee counter animation
+        function animateCoffeeCounter() {
+            const coffeeCounter = document.querySelector('.coffee-counter span');
+            let count = 2500;
+            const target = 2500 + Math.floor(Math.random() * 100);
+            const increment = Math.ceil((target - count) / 100);
+            
+            const timer = setInterval(() => {
+                count += increment;
+                coffeeCounter.textContent = `And counting... (${count}+)`;
+                
+                if (count >= target) {
+                    clearInterval(timer);
+                    coffeeCounter.textContent = `And counting... (${target}+)`;
+                }
+            }, 50);
+            
+            // Restart animation every 10 seconds
+            setTimeout(animateCoffeeCounter, 10000);
+        }
+        
+        // Start coffee counter animation after page loads
+        setTimeout(animateCoffeeCounter, 2000);
+    </script>
+</body>
+</html>
